@@ -4,19 +4,22 @@ class UsersController < ApplicationController
 	end
 
 	def new
-
+		@user = User.new
 	end
 
 	def create
 		@user = User.new(user_params)
 
-		@user.save
-		redirect_to @user #Should redirect to Success Prompt Page / Thread create page
+		if @user.save
+			redirect_to @user #Should redirect to Success Prompt Page / Thread create page
+		else
+			render 'new'
+		end
 	end
 
 	private
 		def user_params #For strong parameters
-			params.require(:user).permit(:username, :password)
+			params.require(:user).permit(:username, :password, :password_confirmation)
 		end
 
 end
