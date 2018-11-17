@@ -1,3 +1,4 @@
+<h1>Sign up</h1>
 <%= form_with scope: :user, url: users_path, local: true do |form| %>
 
   <!Error printing>
@@ -12,17 +13,17 @@
   <% end %>
 
   <p>
-    <%= form.label 'Username' %><br>
+    Username<br>
     <%= form.text_field :username %>
   </p>
  
   <p>
-    <%= form.label 'Password' %><br>
+    Password<br>
     <%= form.password_field :password %>
   </p>
  
   <p>
-    <%= form.label 'Confirm Password' %><br>
+    Confirm Password<br>
     <%= form.password_field :password_confirmation %>
   </p>
 
