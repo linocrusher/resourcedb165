@@ -11,9 +11,13 @@ Rails.application.routes.draw do
 
   post 'sessions/logout'
 
+  get 'users/:user_id/resourcethreads' => 'resource_threads#index'
+
   get 'home/index'
 
-  resources :users
+  resources :users do
+    resources :resource_threads
+  end
 
   root 'home#index'
 

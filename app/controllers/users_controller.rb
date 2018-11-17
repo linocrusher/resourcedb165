@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 		@user = User.new(user_params)
 
 		if @user.save
-			redirect_to @user #Should redirect to Success Prompt Page / Thread create page
+			redirect_to @user #Should redirect to Success Prompt Page
 		else
 			render 'new'
 		end

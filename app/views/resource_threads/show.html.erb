@@ -1,0 +1,20 @@
+<p>
+	<strong>Title:</strong>
+	<%= @resourcethread.title %>
+</p>
+
+<p>
+	<strong>Description:</strong>
+	<%= @resourcethread.description %>
+</p>
+
+<p>
+<%= link_to 'Destroy', user_resource_thread_path(@user.id, @resourcethread.id),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+</p>
+
+<p>
+	<strong>Placeholder for list of folders/resources</strong>
+</p>
+<%= link_to 'Back to thread index', user_resource_threads_path(@user.id) %>

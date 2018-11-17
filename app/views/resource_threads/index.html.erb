@@ -1,0 +1,18 @@
+<h2>Owned Threads</h2>
+<% @user.resource_threads.each do |resourcethread| %>
+  <p>
+    <strong>Title:</strong>
+    <%= resourcethread.title %>
+  </p>
+ 
+  <p>
+    <strong>Description:</strong>
+    <%= resourcethread.description %>
+  </p>
+<% end %>
+
+<%= link_to 'Create New Thread', controller: 'resource_threads', action: 'new' %>
+
+<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
+	 <%= submit_tag("Log Out") %>
+<% end %>

@@ -1,0 +1,27 @@
+<h2>Create a Thread:</h2>
+<%= form_with(model: [ @user, @user.resource_threads.build ], local: true) do |form| %>
+
+  <!Error printing>
+  <% if @resourcethread.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% @resourcethread.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    Title<br>
+    <%= form.text_field :title %>
+  </p>
+  <p>
+    Description<br>
+    <%= form.text_area :description %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+<%= link_to 'Back to thread index', user_resource_threads_path(@user.id) %>
