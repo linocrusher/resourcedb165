@@ -1,4 +1,35 @@
-<h1>Teach Me Sensei</h1>
-<%= link_to 'Sign Up', controller: 'users', action: 'new' %>
-<br>
-<%= link_to 'Login', controller: 'sessions', action: 'login' %>
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TeachMeSensei</title>
+    <%= stylesheet_link_tag "home" %>
+  </head>
+  <body class="text-center">
+      <div class="overlay cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="masthead mb-auto">
+          <div class="inner">
+            <h3 class="masthead-brand">TMS</h3>
+            <nav class="nav nav-masthead justify-content-center">
+            </nav>
+          </div>
+        </header>
+
+        <main role="main" class="inner cover">
+          <h1 class="cover-heading">Teach Me, Sensei!</h1>
+          <p class="lead">Share your trusted online resources with a community of people who are passionate about learning.</p>
+          <p class="lead">
+            <%= link_to 'Log In', { controller: 'sessions', action: 'login' }, :class => 'btn btn-lg btn-secondary' %>
+            <%= link_to 'Sign Up', { controller: 'users', action: 'new' }, :class => 'btn btn-lg btn-secondary' %>
+          </p>
+        </main>
+
+        <footer class="mastfoot mt-auto">
+          <div class="inner">
+            <p>2018 TeachMeSensei v.1.0</p>
+          </div>
+        </footer>
+      </div>
+  </body>
+</html>
