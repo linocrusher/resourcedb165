@@ -1,0 +1,26 @@
+Logged in as <%= @current_user.username %>
+<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
+	 <%= submit_tag("Log Out") %>
+<% end %>
+
+<h2>All Threads</h2>
+<table>
+	<tr>
+    	<th>Title</th>
+    	<th>Description</th>
+    	<th>Owner</th>
+    	<th colspan="3"></th>
+  	</tr>
+	<% @users.each do |user| %>
+		<% user.resource_threads.each do |resourcethread| %>
+	  	<tr>
+	    	<td><%= resourcethread.title %></td>
+	    	<td><%= resourcethread.description %></td>
+	    	<td><%= user.username %></td>
+	    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
+		</tr>
+		<% end %>
+	<% end %>
+</table>
+
+<%= button_to 'Create New Thread', controller: 'resource_threads', action: 'new' %>

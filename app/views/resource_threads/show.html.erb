@@ -1,0 +1,35 @@
+Logged in as <%= @current_user.username %>
+<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
+	 <%= submit_tag("Log Out") %>
+<% end %>
+
+<p>
+	<strong>Title:</strong>
+	<%= @resourcethread.title %>
+</p>
+
+<p>
+	<strong>Description:</strong>
+	<%= @resourcethread.description %>
+</p>
+
+<p>
+	<strong>Owner:</strong>
+	<%= @resourcethread.user.username %>
+</p>
+
+<% if @current_user == @user %>
+	<p>
+	<%= button_to 'Edit', edit_user_resource_thread_path(@user.id, @resourcethread.id) %>
+	</p>
+	<p>
+	<%= button_to 'Delete', user_resource_thread_path(@user.id, @resourcethread.id),
+	              method: :delete,
+	              data: { confirm: 'Are you sure?' } %>
+	</p>
+<% end %>
+
+<p>
+	<strong>Placeholder for list of folders/resources</strong>
+</p>
+<%= link_to 'Back to thread index', user_resource_threads_path(@user.id) %>
