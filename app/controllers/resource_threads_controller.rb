@@ -1,5 +1,5 @@
 class ResourceThreadsController < ApplicationController
-	before_action :authenticate_user, :only => [:index, :new, :create, :show, :destroy] #Only logged in users can gain access to all the actions
+	before_action :authenticate_user, :only => [:index, :new, :create, :show, :destroy, :edit, :update] #Only logged in users can gain access to all the actions
 	def index
 		@users = User.all #For thread listing
 	end
@@ -7,6 +7,11 @@ class ResourceThreadsController < ApplicationController
 	def new
 		@user = User.find(params[:user_id])
 		@resourcethread = @user.resource_threads.new
+	end
+
+	def edit
+		@user = User.find(params[:user_id])
+		@resourcethread = @user.resource_threads.find(params[:id])
 	end
 
 	def create
@@ -17,6 +22,17 @@ class ResourceThreadsController < ApplicationController
 			redirect_to user_resource_thread_path(@user.id, @resourcethread.id)
 		else
 			render 'new'
+		end
+	end
+
+	def update
+		@user = User.find(params[:user_id])
+		@resourcethread = @user.resource_threads.find(params[:id])
+
+		if @resourcethread.update(resourcethread_params)
+			redirect_to user_resource_thread_path(@user.id, @resourcethread.id)
+		else
+			render 'edit'
 		end
 	end
 

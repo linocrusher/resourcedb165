@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   post 'users/:user_id/resource_threads/:id' => 'resource_threads#show'
 
+  post 'users/:user_id/resource_threads/:id/edit' => 'resource_threads#edit'
+
   get 'home/index'
 
   resources :users do
