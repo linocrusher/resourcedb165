@@ -16,7 +16,8 @@ end
 
 def save_login_state 
 	if session[:user_id]
-		redirect_to(:controller => 'sessions', :action => 'home') #Should redirect to Thread Page
+		@current_user = User.find session[:user_id] 
+		redirect_to user_resource_threads_path(@current_user.id) #Should redirect to Thread Page
 		return false
 	else
 		return true
