@@ -1,8 +1,7 @@
 class ResourceThreadsController < ApplicationController
 	before_action :authenticate_user, :only => [:index, :new, :create, :show, :destroy] #Only logged in users can gain access to all the actions
 	def index
-		@user = User.find(params[:user_id])
-		@resourcethreads = @user.resource_threads.all
+		@users = User.all #For thread listing
 	end
 
 	def new
