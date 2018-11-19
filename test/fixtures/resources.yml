@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  trust: 1.5
+  text: MyText
+  resource_thread: one
+
+two:
+  trust: 1.5
+  text: MyText
+  resource_thread: two

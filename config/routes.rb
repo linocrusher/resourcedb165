@@ -20,7 +20,10 @@ Rails.application.routes.draw do
   get 'home/index'
 
   resources :users do
-    resources :resource_threads
+    resources :resource_threads do
+      resources :folders
+      resources :resources
+    end
   end
 
   root 'home#index'

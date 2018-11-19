@@ -2,6 +2,8 @@ class ResourceThread < ApplicationRecord
   belongs_to :user
   has_many :tags
   has_many :keywords, through: :tags
+  has_many :folders
+  has_many :resources
   validates :title, presence: true, length: { maximum: 100 }
   validates :description, presence: true
 
