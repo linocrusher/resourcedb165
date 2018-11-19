@@ -3,6 +3,15 @@ class ResourceThreadsController < ApplicationController
 	def index
 		@users = User.all #For thread listing
 		@keyword = Keyword.find_by(text: params[:keyword]) #pass the search key to @keyword
+		if params[:keyword] == nil or params[:keyword] == ""
+			@status = 0 #Show all threads
+		else
+			if @keyword == nil
+				@status = 1 #Search fail
+			else
+				@status = 2 #Search success
+			end
+		end
 	end
 
 	def new

@@ -8,7 +8,11 @@ Logged in as <%= @current_user.username %>
   <%= submit_tag 'Search' %>
 <% end %>
 
-<h2>All Threads</h2>
+<%= form_tag(user_resource_threads_path, method: :get) do %> <!Loads back all existing Threads>
+  <%= submit_tag 'Clear Search' %>
+<% end %>
+
+<h2>Threads</h2>
 <table>
 	<tr>
     	<th>Title</th>
@@ -16,23 +20,29 @@ Logged in as <%= @current_user.username %>
     	<th>Owner</th>
     	<th colspan="3"></th>
   	</tr>
-	<% @users.each do |user| %>
-		<% user.resource_threads.each do |resourcethread| %>
-			<% if @keyword == nil or @keyword.text == "" %> <!If keyword is blank/null, show all threads>
-		  	<tr>
-		    	<td><%= resourcethread.title %></td>
-		    	<td><%= resourcethread.description %></td>
-		    	<td><%= user.username %></td>
-		    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
-			</tr>
-			<% else %>
-				<% if resourcethread.keywords.find_by(text: @keyword.text) %> <!If keyword has parameters passed, show matching articles>
+
+  	<% if @status == 1 %> <!If keyword doesn't match any tag, print No results>
+  		<td>No results found</td>
+  	<% else %>
+		<% @users.each do |user| %>
+			<% user.resource_threads.each do |resourcethread| %>
+				<% if @status == 0 %> <!If keyword is blank/null, show all threads>
 			  	<tr>
 			    	<td><%= resourcethread.title %></td>
 			    	<td><%= resourcethread.description %></td>
 			    	<td><%= user.username %></td>
 			    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
-				</tr>				
+				</tr>
+
+				<% else %>
+					<% if resourcethread.keywords.find_by(text: @keyword.text) %> <!If keyword has parameters passed, show matching articles>
+					<tr>
+					  	<td><%= resourcethread.title %></td>
+					   	<td><%= resourcethread.description %></td>
+					   	<td><%= user.username %></td>
+					   	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
+					</tr>				
+					<% end %>
 				<% end %>
 			<% end %>
 		<% end %>
