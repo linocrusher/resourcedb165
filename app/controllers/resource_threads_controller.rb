@@ -2,6 +2,7 @@ class ResourceThreadsController < ApplicationController
 	before_action :authenticate_user, :only => [:index, :new, :create, :show, :destroy, :edit, :update] #Only logged in users can gain access to all the actions
 	def index
 		@users = User.all #For thread listing
+		@keyword = Keyword.find_by(text: params[:keyword]) #pass the search key to @keyword
 	end
 
 	def new
@@ -51,6 +52,6 @@ class ResourceThreadsController < ApplicationController
 
 	private
 	def resourcethread_params
-		params.require(:resource_thread).permit(:title, :description, :all_keywords)
+		params.require(:resource_thread).permit(:title, :description, :all_keywords, :keyword)
 	end
 end

@@ -3,6 +3,11 @@ Logged in as <%= @current_user.username %>
 	 <%= submit_tag("Log Out") %>
 <% end %>
 
+<%= form_tag(user_resource_threads_path, method: :get) do %>
+  <%= text_field_tag :keyword %>
+  <%= submit_tag 'Search' %>
+<% end %>
+
 <h2>All Threads</h2>
 <table>
 	<tr>
@@ -13,12 +18,23 @@ Logged in as <%= @current_user.username %>
   	</tr>
 	<% @users.each do |user| %>
 		<% user.resource_threads.each do |resourcethread| %>
-	  	<tr>
-	    	<td><%= resourcethread.title %></td>
-	    	<td><%= resourcethread.description %></td>
-	    	<td><%= user.username %></td>
-	    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
-		</tr>
+			<% if @keyword == nil or @keyword.text == "" %> <!If keyword is blank/null, show all threads>
+		  	<tr>
+		    	<td><%= resourcethread.title %></td>
+		    	<td><%= resourcethread.description %></td>
+		    	<td><%= user.username %></td>
+		    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
+			</tr>
+			<% else %>
+				<% if resourcethread.keywords.find_by(text: @keyword.text) %> <!If keyword has parameters passed, show matching articles>
+			  	<tr>
+			    	<td><%= resourcethread.title %></td>
+			    	<td><%= resourcethread.description %></td>
+			    	<td><%= user.username %></td>
+			    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
+				</tr>				
+				<% end %>
+			<% end %>
 		<% end %>
 	<% end %>
 </table>
