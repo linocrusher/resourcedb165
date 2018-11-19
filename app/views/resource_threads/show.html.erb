@@ -18,6 +18,11 @@ Logged in as <%= @current_user.username %>
 	<%= @resourcethread.user.username %>
 </p>
 
+<p>
+	<strong>Keywords:</strong>
+	<%= @resourcethread.all_keywords %>
+</p>
+
 <% if @current_user == @user %>
 	<p>
 	<%= button_to 'Edit', edit_user_resource_thread_path(@user.id, @resourcethread.id) %>

@@ -51,6 +51,6 @@ class ResourceThreadsController < ApplicationController
 
 	private
 	def resourcethread_params
-		params.require(:resource_thread).permit(:title, :description)
+		params.require(:resource_thread).permit(:title, :description, :all_keywords)
 	end
 end

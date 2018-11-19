@@ -22,6 +22,10 @@ Logged in as <%= @current_user.username %>
     <%= form.text_field :title %>
   </p>
   <p>
+    Keywords (separate by comma)<br>
+    <%= form.text_field :all_keywords %>
+  </p>
+  <p>
     Description<br>
     <%= form.text_area :description %>
   </p>
