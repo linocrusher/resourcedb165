@@ -25,7 +25,7 @@ class ResourceThreadsController < ApplicationController
 		end
 	end
 
-	def update #never gets called since edit -> create instead of update 
+	def update
 		@user = User.find(params[:user_id])
 		@resourcethread = @user.resource_threads.find(params[:id])
 

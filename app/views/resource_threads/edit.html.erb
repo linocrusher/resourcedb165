@@ -4,7 +4,7 @@ Logged in as <%= @current_user.username %>
 <% end %>
 
 <h2>Edit Thread:</h2>
-<%= form_for([ @user, @user.resource_threads.build ], local: true) do |form| %>
+<%= form_with( model: [@user, @resourcethread], local: true) do |form| %>
 
   <!Error printing>
   <% if @resourcethread.errors.any? %>
