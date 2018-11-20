@@ -49,6 +49,19 @@ class ResourceThreadsController < ApplicationController
 	def show
 		@user = User.find(params[:user_id])
 		@resourcethread = @user.resource_threads.find(params[:id])
+		#For folder-resource links
+		if params[:type]
+			@folder = @resourcethread.folders.find(params[:f_id])
+			@resource = @resourcethread.resources.find(params[:r_id])
+		end
+		if params[:type] == "add"
+			if Rfile.exists?(:resource => @resource, :folder => @folder) == false
+				Rfile.create(:resource => @resource, :folder => @folder)
+			end
+		elsif params[:type] == "delete"
+			@rfile = Rfile.where(:resource => @resource, :folder => @folder)
+			@rfile.destroy_all
+		end
 	end
 
 	def destroy
@@ -61,6 +74,6 @@ class ResourceThreadsController < ApplicationController
 
 	private
 	def resourcethread_params
-		params.require(:resource_thread).permit(:title, :description, :all_keywords, :keyword)
+		params.require(:resource_thread).permit(:title, :description, :all_keywords, :keyword, :r_id, :f_id, :action)
 	end
 end

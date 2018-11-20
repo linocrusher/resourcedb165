@@ -35,6 +35,7 @@ Logged in as <%= @current_user.username %>
 <% end %>
 
 	<h2>Folders:</h2>
+	<hr>
 	<% @resourcethread.folders.each do |folder| %>
 	<p>
 		<strong><%= folder.name %></strong>
@@ -43,7 +44,23 @@ Logged in as <%= @current_user.username %>
 			method: :delete,
 			data: { confirm: 'Are you sure?' } %>
 		<% end %>
+
 	</p>
+		<% folder.resources.each do |resource| %>
+		<p>
+			<strong>Link:</strong>
+			<%= resource.text %><br>
+			Created on:
+			<%= resource.created_at %>
+			<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
+				<%= hidden_field_tag :f_id, folder.id %> <!Pass the folder id to f_id>
+				<%= hidden_field_tag :r_id, resource.id %> <!Pass the resource id to r_id>
+				<%= hidden_field_tag :type, "delete" %>
+				<%= form.submit 'Remove from folder' %>
+			<% end %>
+		</p>
+		<% end %>
+		<hr>
 	<% end %>
 
 <% if @current_user == @user %> <!Show Create Folder if user owns the thread>
@@ -61,16 +78,26 @@ Logged in as <%= @current_user.username %>
 <% end %>
 
 <h2>Resources:</h2>
+<hr>
 <% @resourcethread.resources.each do |resource| %>
-  <p>
-    <strong>Link:</strong>
-    <%= resource.text %><br>
-    Created on:
-    <%= resource.created_at %>
-    <%= button_to 'Delete', user_resource_thread_resource_path(@user.id, @resourcethread.id, resource),
-	              method: :delete,
-	              data: { confirm: 'Are you sure?' } %>
-  </p>
+	  <p>
+	    <strong>Link:</strong>
+	    <%= resource.text %><br>
+	    Created on:
+	    <%= resource.created_at %>
+	    <!Add to folder placeholder>
+	    <%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
+	    	<!For the drop down list>
+	    	<%= form.collection_select :f_id, @resourcethread.folders.all, :id, :name %> <!Passes id of the selected folder to f_id>
+	    	<%= hidden_field_tag :r_id, resource.id %> <!Pass the resource id to r_id>
+	    	<%= hidden_field_tag :type, "add" %>
+	    	<%= form.submit 'Add to folder' %>
+	    <% end %>
+	    <%= button_to 'Delete', user_resource_thread_resource_path(@user.id, @resourcethread.id, resource),
+		              method: :delete,
+		              data: { confirm: 'Are you sure?' } %>
+	  </p>
+	  <hr>
 <% end %>
 
 <p>
