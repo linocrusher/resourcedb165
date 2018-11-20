@@ -2,7 +2,7 @@ Logged in as <%= @current_user.username %>
 <%= form_tag(:controller => 'sessions', :action => 'logout') do %>
 	 <%= submit_tag("Log Out") %>
 <% end %>
-
+<hr>
 <%= form_tag(user_resource_threads_path, method: :get) do %>
   <%= text_field_tag :keyword %>
   <%= submit_tag 'Search' %>

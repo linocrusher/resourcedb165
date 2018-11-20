@@ -86,7 +86,24 @@ Logged in as <%= @current_user.username %>
 	    <strong>Link:</strong>
 	    <%= resource.text %><br>
 	    Created on:
-	    <%= resource.created_at %>
+	    <%= resource.created_at %><br>
+	    Trust:
+	    <% score = Vote.where(:resource => resource, :value => "up").count 
+	       total = Vote.where(:resource => resource).count
+	       if total != 0 
+	       		trust_val = (score.to_f/total.to_f) * 100
+	      	else
+	      		trust_val = 100
+	      	end %>
+	    <%= trust_val %><br>
+	    Did you find this resource helpful?
+
+	    <%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %> <!Vote drop down list>
+	    	<%= form.select :v_type, [['Yes','up'],['No','down'],['Remove Vote','none']] %>
+	    	<%= hidden_field_tag :r_id, resource.id %> <!Pass the resource id to r_id>
+	    	<%= form.submit 'Submit' %>
+	    <% end %>
+	    <br>
 	    <% if @current_user == @user %> <!Show Add to Folder if user owns the thread>
 		    <%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
 		    	<!For the drop down list>

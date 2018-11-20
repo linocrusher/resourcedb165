@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181119142626) do
+ActiveRecord::Schema.define(version: 20181120160510) do
 
   create_table "folders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -72,6 +72,16 @@ ActiveRecord::Schema.define(version: 20181119142626) do
     t.string "salt"
   end
 
+  create_table "votes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "value"
+    t.bigint "user_id"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_votes_on_resource_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
   add_foreign_key "folders", "resource_threads"
   add_foreign_key "resource_threads", "users"
   add_foreign_key "resources", "resource_threads"
@@ -79,4 +89,6 @@ ActiveRecord::Schema.define(version: 20181119142626) do
   add_foreign_key "rfiles", "resources"
   add_foreign_key "tags", "keywords"
   add_foreign_key "tags", "resource_threads"
+  add_foreign_key "votes", "resources"
+  add_foreign_key "votes", "users"
 end

@@ -1,5 +1,5 @@
 class FoldersController < ApplicationController
-  before_action :authenticate_user, :only => [:create, :index, :destroy] #Only logged in users can gain access to all the actions
+  before_action :authenticate_user, :only => [:create, :destroy] #Only logged in users can gain access to all the actions
   def create
     @user = User.find(params[:user_id])
 	  @resourcethread = @user.resource_threads.find(params[:resource_thread_id])

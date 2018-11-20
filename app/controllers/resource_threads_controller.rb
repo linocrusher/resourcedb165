@@ -62,6 +62,30 @@ class ResourceThreadsController < ApplicationController
 			@rfile = Rfile.where(:resource => @resource, :folder => @folder)
 			@rfile.destroy_all
 		end
+		#For votes
+		if params[:v_type]
+			@resource = @resourcethread.resources.find(params[:r_id])
+		end
+		if params[:v_type] == "up"
+			if Vote.exists?(:user => @current_user, :resource => @resource) == false
+				Vote.create(:user => @current_user, :resource => @resource, :value => "up")
+			elsif Vote.exists?(:user => @current_user, :resource => @resource, :value => "down")
+				@vote = Vote.find_by(:user => @current_user, :resource => @resource)
+				@vote.update_attribute(:value, "up")
+			end
+		elsif params[:v_type] == "down"
+			if Vote.exists?(:user => @current_user, :resource => @resource) == false
+				Vote.create(:user => @current_user, :resource => @resource, :value => "down")
+			elsif Vote.exists?(:user => @current_user, :resource => @resource, :value => "up")
+				@vote = Vote.find_by(:user => @current_user, :resource => @resource)
+				@vote.update_attribute(:value, "down")
+			end
+		elsif params[:v_type] == "none"
+			if Vote.exists?(:user => @current_user, :resource => @resource)
+				@vote = Vote.where(:user => @current_user, :resource => @resource)
+				@vote.destroy_all
+			end
+		end
 	end
 
 	def destroy
@@ -74,6 +98,6 @@ class ResourceThreadsController < ApplicationController
 
 	private
 	def resourcethread_params
-		params.require(:resource_thread).permit(:title, :description, :all_keywords, :keyword, :r_id, :f_id, :action)
+		params.require(:resource_thread).permit(:title, :description, :all_keywords, :keyword, :r_id, :f_id, :action, :v_type)
 	end
 end

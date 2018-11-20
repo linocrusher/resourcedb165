@@ -14,12 +14,12 @@ class ResourcesController < ApplicationController
   end
 
   def destroy
-		@user = User.find(params[:user_id])
-		@resourcethread = @user.resource_threads.find(params[:resource_thread_id])
-		@resource = @resourcethread.resources.find(params[:id])
-		@resource.destroy
+	@user = User.find(params[:user_id])
+	@resourcethread = @user.resource_threads.find(params[:resource_thread_id])
+	@resource = @resourcethread.resources.find(params[:id])
+	@resource.destroy
 
-		redirect_to user_resource_thread_path(@user, @resourcethread)
+	redirect_to user_resource_thread_path(@user, @resourcethread)
   end
 
   private
