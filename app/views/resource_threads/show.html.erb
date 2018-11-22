@@ -79,23 +79,23 @@ Logged in as <%= @current_user.username %>
 	</p>
 <% end %>
 
-<h2>Resources:</h2>
+<h2> 
+	<%= @resourcethread.resource_count %> <!For grammar correction>
+	<% if @resourcethread.resource_count == 1%>
+	Reply:
+	<% else %>
+	Replies:
+	<% end %>
+	</h2>
 <hr>
 <% @resourcethread.resources.each do |resource| %>
 	  <p>
-	    <strong>Link:</strong>
+	    <strong>Resource:</strong>
 	    <%= resource.text %><br>
 	    Created on:
 	    <%= resource.created_at %><br>
 	    Trust:
-	    <% score = Vote.where(:resource => resource, :value => "up").count 
-	       total = Vote.where(:resource => resource).count
-	       if total != 0 
-	       		trust_val = (score.to_f/total.to_f) * 100
-	      	else
-	      		trust_val = 100
-	      	end %>
-	    <%= trust_val %><br>
+	    <%= resource.trust %><br>
 	    Did you find this resource helpful?
 
 	    <%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %> <!Vote drop down list>

@@ -29,6 +29,7 @@ class ResourceThreadsController < ApplicationController
 		@resourcethread = @user.resource_threads.create(resourcethread_params)
 
 		if @resourcethread.save
+			 @resourcethread.update_attribute(:resource_count, 0)
 			redirect_to user_resource_thread_path(@user.id, @resourcethread.id)
 		else
 			render 'new'
@@ -50,7 +51,7 @@ class ResourceThreadsController < ApplicationController
 		@user = User.find(params[:user_id])
 		@resourcethread = @user.resource_threads.find(params[:id])
 		#For folder-resource links
-		if params[:type]
+		if params[:type] and params[:f_id] != nil
 			@folder = @resourcethread.folders.find(params[:f_id])
 			@resource = @resourcethread.resources.find(params[:r_id])
 		end
@@ -65,32 +66,61 @@ class ResourceThreadsController < ApplicationController
 		#For votes
 		if params[:v_type]
 			@resource = @resourcethread.resources.find(params[:r_id])
-		end
-		if params[:v_type] == "up"
-			if Vote.exists?(:user => @current_user, :resource => @resource) == false
-				Vote.create(:user => @current_user, :resource => @resource, :value => "up")
-			elsif Vote.exists?(:user => @current_user, :resource => @resource, :value => "down")
-				@vote = Vote.find_by(:user => @current_user, :resource => @resource)
-				@vote.update_attribute(:value, "up")
+
+			if params[:v_type] == "up"
+				if Vote.exists?(:user => @current_user, :resource => @resource) == false
+					Vote.create(:user => @current_user, :resource => @resource, :value => "up")
+				elsif Vote.exists?(:user => @current_user, :resource => @resource, :value => "down")
+					@vote = Vote.find_by(:user => @current_user, :resource => @resource)
+					@vote.update_attribute(:value, "up")
+				end
+			elsif params[:v_type] == "down"
+				if Vote.exists?(:user => @current_user, :resource => @resource) == false
+					Vote.create(:user => @current_user, :resource => @resource, :value => "down")
+				elsif Vote.exists?(:user => @current_user, :resource => @resource, :value => "up")
+					@vote = Vote.find_by(:user => @current_user, :resource => @resource)
+					@vote.update_attribute(:value, "down")
+				end
+			elsif params[:v_type] == "none"
+				if Vote.exists?(:user => @current_user, :resource => @resource)
+					@vote = Vote.where(:user => @current_user, :resource => @resource)
+					@vote.destroy_all
+				end
 			end
-		elsif params[:v_type] == "down"
-			if Vote.exists?(:user => @current_user, :resource => @resource) == false
-				Vote.create(:user => @current_user, :resource => @resource, :value => "down")
-			elsif Vote.exists?(:user => @current_user, :resource => @resource, :value => "up")
-				@vote = Vote.find_by(:user => @current_user, :resource => @resource)
-				@vote.update_attribute(:value, "down")
+			#For trust recalculation
+			score = Vote.where(:resource => @resource, :value => "up").count 
+			total = Vote.where(:resource => @resource).count
+			if total != 0 
+				trust_val = (score.to_f/total.to_f) * 100
+			else
+				trust_val = 100 #If there are no votes, trust is set to 100
 			end
-		elsif params[:v_type] == "none"
-			if Vote.exists?(:user => @current_user, :resource => @resource)
-				@vote = Vote.where(:user => @current_user, :resource => @resource)
-				@vote.destroy_all
-			end
+			@resource.update_attribute(:trust, trust_val)
 		end
 	end
 
 	def destroy
 		@user = User.find(params[:user_id])
 		@resourcethread = @user.resource_threads.find(params[:id])
+		@tags = Tag.where(:resource_thread => @resourcethread) #Delete all links to associated tags
+		@folders = Folder.where(:resource_thread => @resourcethread) #Delete all folders
+		@resources = Resource.where(:resource_thread => @resourcethread) #Delete all resources
+		@tags.destroy_all
+
+		@folders.each do |f| #Delete all links from resources to folders
+			@rfile = Rfile.where(:folder => f)
+			@rfile.destroy_all
+		end
+
+		@folders.destroy_all
+
+		#Delete all votes
+		@resources.each do |r|
+			@vote = Vote.where(:resource => r)
+			@vote.destroy_all
+		end
+
+		@resources.destroy_all
 		@resourcethread.destroy
 
 		redirect_to user_resource_threads_path(@user.id)
