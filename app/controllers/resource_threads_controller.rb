@@ -30,6 +30,12 @@ class ResourceThreadsController < ApplicationController
 
 		if @resourcethread.save
 			 @resourcethread.update_attribute(:resource_count, 0)
+			 #Update keyword instances
+			 @resourcethread.keywords.each do |k|
+			 	count = Keyword.where(:text => k.text).count
+			 	k.update_attribute(:instances, count)
+			 end
+
 			redirect_to user_resource_thread_path(@user.id, @resourcethread.id)
 		else
 			render 'new'
@@ -41,6 +47,11 @@ class ResourceThreadsController < ApplicationController
 		@resourcethread = @user.resource_threads.find(params[:id])
 
 		if @resourcethread.update(resourcethread_params)
+			#Update keyword instances
+			 @resourcethread.keywords.each do |k|
+			 	count = Keyword.where(:text => k.text).count
+			 	k.update_attribute(:instances, count)
+			 end
 			redirect_to user_resource_thread_path(@user.id, @resourcethread.id)
 		else
 			render 'edit'
@@ -122,6 +133,11 @@ class ResourceThreadsController < ApplicationController
 
 		@resources.destroy_all
 		@resourcethread.destroy
+
+		#Update keyword instances
+		 @resourcethread.keywords.each do |k|
+		 	k.decrement!(:instances)
+		 end
 
 		redirect_to user_resource_threads_path(@user.id)
 	end

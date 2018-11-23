@@ -20,6 +20,9 @@ class ResourcesController < ApplicationController
   	@resourcethread = @user.resource_threads.find(params[:resource_thread_id])
     @resourcethread.decrement!(:resource_count)
   	@resource = @resourcethread.resources.find(params[:id])
+    #Delete associated votes
+    @votes = Vote.where(:resource => @resource)
+    @votes.destroy_all
   	@resource.destroy
 
   	redirect_to user_resource_thread_path(@user, @resourcethread)
