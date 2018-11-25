@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+	layout false
 	before_action :save_login_state, :only => [:show, :new, :create] #Prevents access to the Sign Up Pages if user is already logged in.
 
 	def show

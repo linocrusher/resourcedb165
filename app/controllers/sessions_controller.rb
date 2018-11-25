@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  layout false
   before_action :authenticate_user, :only => [:logout] #User can only access logout if logged in
   before_action :save_login_state, :only => [:login, :login_attempt] #Prevent access to the login page if user is already logged in
 
@@ -12,7 +13,7 @@ class SessionsController < ApplicationController
   		redirect_to user_resource_threads_path(authorized_user.id) #Should redirect to Thread Index Page
   	else
   		#Still missing error prompt
-  		render "login"	
+  		render "login"
   	end
   end
 

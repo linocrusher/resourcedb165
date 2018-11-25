@@ -1,16 +1,23 @@
-<h1>Log in</h1>
-<%= form_tag(:action => 'login_attempt') do %>    
-    <p>
-    	Username<br>
-    	<%= text_field_tag(:username) %>
-    </p>
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Log In - TeachMeSensei</title>
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "sessions" %>
+  </head>
 
-    <p>
-    	Password<br> 
-    	<%= password_field_tag :password %>
-	</p> 
-    
-    <%= submit_tag("Log In") %>
-<% end %>
-
-<%= link_to 'Back to homepage', home_index_path %>
+  <body class="text-center">
+    <%= form_tag({:action => 'login_attempt'}, {:class => 'form-signin'}) do %>
+      <!--img class="mb-4" src="tms_logo.svg" alt="" width="72" height="72"-->
+      <h1 class="h3 mb-3 font-weight-normal">TeachMeSensei</h1>
+      <%= label_tag :username, nil, class: 'sr-only' %>
+      <%= text_field_tag :username, nil, type: 'username', class: 'form-control', placeholder: 'Username', required: true, autofocus: true %>
+      <%= label_tag :password, nil, class: 'sr-only' %>
+      <%= password_field_tag :password, nil, type: 'password', class: 'form-control', placeholder: 'Password', required: true %>
+      <%= submit_tag('Log In', :class => 'btn btn-lg btn-primary btn-block') %>
+      <p class="mt-5 mb-3 text-muted"><%= link_to '<- Back to homepage', home_index_path, class: 'text-muted' %></p>
+    <% end %>
+  </body>
+</html>
