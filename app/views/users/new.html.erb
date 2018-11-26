@@ -1,35 +1,32 @@
-<h1>Sign up</h1>
-<%= form_with scope: :user, url: users_path, local: true do |form| %>
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Join Now - TeachMeSensei</title>
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "users" %>
+  </head>
 
-  <!Error printing>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <p>
-    Username<br>
-    <%= form.text_field :username %>
-  </p>
- 
-  <p>
-    Password<br>
-    <%= form.password_field :password %>
-  </p>
- 
-  <p>
-    Confirm Password<br>
-    <%= form.password_field :password_confirmation %>
-  </p>
-
-  <p>
-    <%= form.submit %>
-  </p>
-<% end %>
-
-<%= link_to 'Back to homepage', home_index_path %>
+  <body class="text-center">
+    <%= form_with scope: :user, url: users_path, local: true, class: 'form-signin' do |form| %>
+      <!--img class="mb-4" src="tms_logo.svg" alt="" width="72" height="72"-->
+      <h1 class="h3 mb-3 font-weight-normal">TeachMeSensei</h1>
+      <% if @user.errors.any? %>
+        <div class="alert alert-danger" role="alert">
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </div>
+      <% end %>
+      <%= label_tag :username, nil, class: 'sr-only' %>
+      <%= form.text_field :username, type: 'username', class: 'form-control', placeholder: 'Username', required: true, autofocus: true %>
+      <%= label_tag :password, nil, class: 'sr-only' %>
+      <%= form.password_field :password, type: 'password', class: 'form-control middle-box-style', placeholder: 'Password', required: true %>
+      <%= label_tag :password_confirmation, nil, class: 'sr-only' %>
+      <%= form.password_field :password_confirmation, type: 'password', class: 'form-control bottom-box-style', placeholder: 'Confirm Password', required: true %>
+      <%= form.submit 'Sign Up', class: 'btn btn-lg btn-primary btn-block' %>
+      <p class="mt-5 mb-3 text-muted"><%= link_to '<- Back to homepage', home_index_path, class: 'text-muted' %></p>
+    <% end %>
+  </body>
+</html>
