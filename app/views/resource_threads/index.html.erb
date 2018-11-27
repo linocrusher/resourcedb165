@@ -1,55 +1,91 @@
-Logged in as <%= @current_user.username %>
-<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
-	 <%= submit_tag("Log Out") %>
-<% end %>
-<hr>
-<%= form_tag(user_resource_threads_path, method: :get) do %>
-  <%= text_field_tag :keyword %>
-  <%= submit_tag 'Search' %>
-<% end %>
-
-<%= form_tag(user_resource_threads_path, method: :get) do %> <!Loads back all existing Threads>
-  <%= submit_tag 'Clear Search' %>
-<% end %>
-
-<h2>Threads</h2>
-<table>
-	<tr>
-    	<th>Title</th>
-    	<th>Description</th>
-    	<th>Owner</th>
-    	<th>Resource count</th>
-    	<th colspan="3"></th>
-  	</tr>
-
-  	<% if @status == 1 %> <!If keyword doesn't match any tag, print No results>
-  		<td>No results found</td>
-  	<% else %>
-		<% @users.each do |user| %>
-			<% user.resource_threads.each do |resourcethread| %>
-				<% if @status == 0 %> <!If keyword is blank/null, show all threads>
-			  	<tr>
-			    	<td><%= resourcethread.title %></td>
-			    	<td><%= resourcethread.description %></td>
-			    	<td><%= user.username %></td>
-			    	<td><%= resourcethread.resource_count %></td>
-			    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
-				</tr>
-
-				<% else %>
-					<% if resourcethread.keywords.find_by(text: @keyword.text) %> <!If keyword has parameters passed, show matching articles>
-					<tr>
-					  	<td><%= resourcethread.title %></td>
-					   	<td><%= resourcethread.description %></td>
-					   	<td><%= user.username %></td>
-					   	<td><%= resourcethread.resource_count %></td>
-					   	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
-					</tr>				
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Thread Browser - TeachMeSensei</title>
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "resource_threads" %>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">TeachMeSensei</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">My Threads </a>
+          </li>
+          <li class="nav-item active">
+            <%= link_to 'Thread Browser', { controller: 'resource_threads', action: 'index' }, :class => 'nav-link' %>
+          </li>
+        </ul>
+				<div class="form-inline my-2 my-md-0">
+					<div class="text-light small mx-2">Logged in as <strong><%= @current_user.username %></strong>.</div>
+					<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
+						 <%= submit_tag("Log Out", class: 'btn btn-sm btn-outline-secondary') %>
 					<% end %>
-				<% end %>
-			<% end %>
-		<% end %>
-	<% end %>
-</table>
+				</div>
+      </div>
+    </nav>
 
-<%= button_to 'Create New Thread', controller: 'resource_threads', action: 'new' %>
+		<!-- Content under navbar -->
+
+    <main role="main" class="container">
+			<!-- Note: Maybe create function can be moved to "My Threads"? -->
+			<%= button_to 'Create New Thread', controller: 'resource_threads', action: 'new' %>
+      <div class="jumbotron">
+				<h1 class="h2">Thread Browser</h1>
+				<div class="form-inline">
+					<%= form_tag(user_resource_threads_path, method: :get) do %>
+					  <%= text_field_tag :keyword %>
+					  <%= submit_tag 'Search' %>
+					<% end %>
+					<%= form_tag(user_resource_threads_path, method: :get) do %> <!-- Loads back all existing Threads -->
+					  <%= submit_tag 'Clear Search' %>
+					<% end %>
+				</div>
+				<hr>
+
+				<% if @status == 1 %> <!-- If keyword doesn't match any tag, print No results -->
+					<p>No results found.</p>
+				<% else %>
+					<table>
+						<tr>
+							<th>Title</th>
+							<th>Description</th>
+							<th>Owner</th>
+							<th>Resource count</th>
+							<th colspan="3"></th>
+						</tr>
+						<% @users.each do |user| %>
+							<% user.resource_threads.each do |resourcethread| %>
+								<% if @status == 0 %> <!-- If keyword is blank/null, show all threads -->
+									<tr>
+										<td><%= resourcethread.title %></td>
+										<td><%= resourcethread.description %></td>
+										<td><%= user.username %></td>
+										<td><%= resourcethread.resource_count %></td>
+										<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
+									</tr>
+								<% else %>
+									<% if resourcethread.keywords.find_by(text: @keyword.text) %> <!-- If keyword has parameters passed, show matching articles -->
+										<tr>
+											<td><%= resourcethread.title %></td>
+											<td><%= resourcethread.description %></td>
+											<td><%= user.username %></td>
+											<td><%= resourcethread.resource_count %></td>
+											<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
+										</tr>
+									<% end %>
+								<% end %>
+							<% end %>
+						<% end %>
+					</table>
+				<% end %>
+      </div>
+    </main>
+  </body>
+</html>

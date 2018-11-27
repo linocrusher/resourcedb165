@@ -1,4 +1,5 @@
 class ResourceThreadsController < ApplicationController
+	layout false
 	before_action :authenticate_user, :only => [:index, :new, :create, :show, :destroy, :edit, :update] #Only logged in users can gain access to all the actions
 	def index
 		@users = User.all #For thread listing
@@ -99,9 +100,9 @@ class ResourceThreadsController < ApplicationController
 				end
 			end
 			#For trust recalculation
-			score = Vote.where(:resource => @resource, :value => "up").count 
+			score = Vote.where(:resource => @resource, :value => "up").count
 			total = Vote.where(:resource => @resource).count
-			if total != 0 
+			if total != 0
 				trust_val = (score.to_f/total.to_f) * 100
 			else
 				trust_val = 100 #If there are no votes, trust is set to 100
