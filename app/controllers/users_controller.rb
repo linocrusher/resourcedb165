@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id]) #save the user instance inside @user
+		session[:user_id] = @user.id
 	end
 
 	def new

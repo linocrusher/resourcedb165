@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Join Now - TeachMeSensei</title>
+    <title>Account Registered - TeachMeSensei</title>
     <%= stylesheet_link_tag "application" %>
     <%= stylesheet_link_tag "users" %>
   </head>
@@ -12,6 +12,6 @@
     <!--img class="mb-4" src="tms_logo.svg" alt="" width="72" height="72"-->
     <div class="container"><p class="h3 mb-3 font-weight-normal">Welcome, <strong><%= @user.username %></strong>!</p>
     <p class="h6 mb-3 font-weight-normal">Your account has successfully been created.</p>
-    <p class="mt-5 mb-3 text-muted"><%= link_to '<- Back to homepage', home_index_path, class: 'text-muted' %></p></div>
+    <%= link_to 'Open the Dashboard', user_resource_threads_path(session[:user_id]), class: 'btn btn-lg btn-primary' %></div>
   </body>
 </html>
