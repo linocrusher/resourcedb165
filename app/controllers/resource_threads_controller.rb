@@ -13,6 +13,12 @@ class ResourceThreadsController < ApplicationController
 				@status = 2 #Search success
 			end
 		end
+
+		@view = params[:view]
+		#For index view type
+		if params[:view] == "user"
+			@view = "user"
+		end
 	end
 
 	def new
@@ -145,6 +151,6 @@ class ResourceThreadsController < ApplicationController
 
 	private
 	def resourcethread_params
-		params.require(:resource_thread).permit(:title, :description, :all_keywords, :keyword, :r_id, :f_id, :action, :v_type)
+		params.require(:resource_thread).permit(:title, :description, :all_keywords, :keyword, :r_id, :f_id, :action, :v_type, :view)
 	end
 end

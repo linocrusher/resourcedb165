@@ -15,12 +15,26 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">My Threads </a>
-          </li>
-          <li class="nav-item active">
-            <%= link_to 'Thread Browser', { controller: 'resource_threads', action: 'index' }, :class => 'nav-link' %>
-          </li>
+					<% if @view == nil %>
+						<li class="nav-item">
+							<%= form_tag(user_resource_threads_path, method: :get) do %>
+								<%= hidden_field_tag :view, "user" %>
+								<%= submit_tag 'My Threads', class: 'a nav-link' %>
+							<% end %>
+	          </li>
+	          <li class="nav-item active">
+							<a class="nav-link" href="#">All Threads</a>
+	          </li>
+					<% elsif @view == "user" %>
+						<li class="nav-item active">
+							<a class="nav-link" href="#">My Threads </a>
+						</li>
+						<li class="nav-item">
+							<%= form_tag(user_resource_threads_path, method: :get) do %>
+								<%= submit_tag 'All Threads', class: 'a nav-link' %>
+							<% end %>
+						</li>
+					<% end %>
         </ul>
 				<div class="form-inline my-2 my-md-0">
 					<div class="text-light small mx-2">Logged in as <strong><%= @current_user.username %></strong>.</div>
@@ -34,7 +48,6 @@
 		<!-- Content under navbar -->
 
     <main role="main" class="container">
-			<!-- Note: Maybe create function can be moved to "My Threads"? -->
 			<%= button_to 'Create New Thread', controller: 'resource_threads', action: 'new' %>
       <div class="jumbotron">
 				<h1 class="h2">Thread Browser</h1>
@@ -49,29 +62,24 @@
 				</div>
 				<hr>
 
-				<% if @status == 1 %> <!-- If keyword doesn't match any tag, print No results -->
-					<p>No results found.</p>
-				<% else %>
-					<table>
-						<tr>
-							<th>Title</th>
-							<th>Description</th>
-							<th>Owner</th>
-							<th>Resource count</th>
-							<th colspan="3"></th>
-						</tr>
-						<% @users.each do |user| %>
-							<% user.resource_threads.each do |resourcethread| %>
-								<% if @status == 0 %> <!-- If keyword is blank/null, show all threads -->
-									<tr>
-										<td><%= resourcethread.title %></td>
-										<td><%= resourcethread.description %></td>
-										<td><%= user.username %></td>
-										<td><%= resourcethread.resource_count %></td>
-										<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
-									</tr>
-								<% else %>
-									<% if resourcethread.keywords.find_by(text: @keyword.text) %> <!-- If keyword has parameters passed, show matching articles -->
+				<% if @view == nil %>
+
+					<% if @status == 1 %> <!-- If keyword doesn't match any tag, print No results -->
+						<p>No results found.</p>
+					<% else %>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Title</th>
+									<th>Description</th>
+									<th>Owner</th>
+									<th>Resources</th>
+									<th colspan="3"></th>
+								</tr>
+							</thead>
+							<% @users.each do |user| %>
+								<% user.resource_threads.each do |resourcethread| %>
+									<% if @status == 0 %> <!-- If keyword is blank/null, show all threads -->
 										<tr>
 											<td><%= resourcethread.title %></td>
 											<td><%= resourcethread.description %></td>
@@ -79,9 +87,36 @@
 											<td><%= resourcethread.resource_count %></td>
 											<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
 										</tr>
+									<% else %>
+										<% if resourcethread.keywords.find_by(text: @keyword.text) %> <!-- If keyword has parameters passed, show matching articles -->
+											<tr>
+												<td><%= resourcethread.title %></td>
+												<td><%= resourcethread.description %></td>
+												<td><%= user.username %></td>
+												<td><%= resourcethread.resource_count %></td>
+												<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
+											</tr>
+										<% end %>
 									<% end %>
 								<% end %>
 							<% end %>
+						</table>
+					<% end %>
+				<% elsif @view == "user" %>
+					<table class="table">
+						<tr>
+							<th>Title</th>
+							<th>Description</th>
+							<th>Resources</th>
+							<th colspan="3"></th>
+						</tr>
+						<% @current_user.resource_threads.each do |resourcethread| %> <!-- List all articles owned by the current user -->
+							<tr>
+								<td><%= resourcethread.title %></td>
+								<td><%= resourcethread.description %></td>
+								<td><%= resourcethread.resource_count %></td>
+								<td><%= button_to 'Open', user_resource_thread_path(@current_user.id, resourcethread.id) %></td>
+							</tr>
 						<% end %>
 					</table>
 				<% end %>
