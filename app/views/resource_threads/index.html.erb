@@ -12,16 +12,34 @@ Logged in as <%= @current_user.username %>
   <%= submit_tag 'Clear Search' %>
 <% end %>
 
+<%if @view == nil%>
+
+	<%= form_tag(user_resource_threads_path, method: :get) do %>
+		<%= hidden_field_tag :view, "user" %>
+	  <%= submit_tag 'View owned threads' %>
+	<% end %>
+
+<% elsif @view == "user" %>
+
+	<%= form_tag(user_resource_threads_path, method: :get) do %>
+	  <%= submit_tag 'View all threads' %>
+	<% end %>
+
+<% end %>
+
 <h2>Threads</h2>
 <table>
 	<tr>
     	<th>Title</th>
     	<th>Description</th>
-    	<th>Owner</th>
+    	<% if @view == nil %>
+    		<th>Owner</th>
+    	<% end %>
     	<th>Resource count</th>
     	<th colspan="3"></th>
   	</tr>
 
+<% if @view == nil %>
   	<% if @status == 1 %> <!If keyword doesn't match any tag, print No results>
   		<td>No results found</td>
   	<% else %>
@@ -31,7 +49,7 @@ Logged in as <%= @current_user.username %>
 			  	<tr>
 			    	<td><%= resourcethread.title %></td>
 			    	<td><%= resourcethread.description %></td>
-			    	<td><%= user.username %></td>
+			    		<td><%= user.username %></td>
 			    	<td><%= resourcethread.resource_count %></td>
 			    	<td><%= button_to 'Open', user_resource_thread_path(user.id, resourcethread.id) %></td>
 				</tr>
@@ -50,6 +68,18 @@ Logged in as <%= @current_user.username %>
 			<% end %>
 		<% end %>
 	<% end %>
+
+<% elsif @view == "user" %>
+	<% @current_user.resource_threads.each do |resourcethread| %> <!List all articles owned by the current user>
+	<tr>
+	  	<td><%= resourcethread.title %></td>
+	   	<td><%= resourcethread.description %></td>
+	   	<td><%= resourcethread.resource_count %></td>
+	   	<td><%= button_to 'Open', user_resource_thread_path(@current_user.id, resourcethread.id) %></td>
+	</tr>				
+	<% end %>	
+
+<% end %>
 </table>
 
 <%= button_to 'Create New Thread', controller: 'resource_threads', action: 'new' %>
