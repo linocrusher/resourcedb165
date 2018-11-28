@@ -3,7 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Thread Browser - TeachMeSensei</title>
+    <title>
+      <% if @view == "user" %>
+        My Threads - TeachMeSensei
+      <% else %>
+        All Threads - TeachMeSensei
+      <% end %>
+    </title>
     <%= stylesheet_link_tag "application" %>
     <%= stylesheet_link_tag "resource_threads" %>
   </head>
@@ -21,14 +27,14 @@
 						</li>
 						<li class="nav-item">
 							<%= form_tag(user_resource_threads_path, method: :get) do %>
-								<%= submit_tag 'All Threads', class: 'a nav-link' %>
+								<%= submit_tag 'All Threads', class: 'no-btn nav-link' %>
 							<% end %>
 						</li>
           <% else %>
             <li class="nav-item">
               <%= form_tag(user_resource_threads_path, method: :get) do %>
                 <%= hidden_field_tag :view, "user" %>
-                <%= submit_tag 'My Threads', class: 'a nav-link' %>
+                <%= submit_tag 'My Threads', class: 'no-btn nav-link' %>
               <% end %>
             </li>
             <li class="nav-item active">
@@ -48,19 +54,26 @@
 		<!-- Content under navbar -->
 
     <main role="main" class="container">
-			<% if @view == "user" %>
-				<%= button_to 'Create New Thread', controller: 'resource_threads', action: 'new' %>
-			<% end %>
       <div class="jumbotron">
-				<h1 class="h2">Thread Browser</h1>
+				<h1 class="h2">
+          <% if @view == "user" %>
+            Browse My Threads
+          <% else %>
+            Browse All Threads
+          <% end %>
+        </h1>
 				<div class="form-inline">
+          <% if @view == "user" %>
+            <%= button_to '+ New Thread', {controller: 'resource_threads', action: 'new'}, {class: 'btn btn-lg btn-primary m-4'} %>
+          <% end %>
 					<%= form_tag(user_resource_threads_path, method: :get) do %>
             <%= hidden_field_tag :view, @view %>
-					  <%= text_field_tag :keyword %>
-					  <%= submit_tag 'Search' %>
+					  <%= text_field_tag :keyword, nil, class: 'form-control' %>
+  					  <%= submit_tag 'Search', class: 'btn btn-primary mx-1' %>
 					<% end %>
 					<%= form_tag(user_resource_threads_path, method: :get) do %> <!-- Loads back all existing Threads -->
-					  <%= submit_tag 'Clear Search' %>
+  					<%= hidden_field_tag :view, @view %>
+              <%= submit_tag 'Clear', class: 'btn btn-outline-primary mx-1'  %>
 					<% end %>
 				</div>
 				<hr>
@@ -88,7 +101,7 @@
 									<td><%= resourcethread.user.username %></td>
 								<% end %>
 								<td><%= resourcethread.resource_count %></td>
-								<td><%= button_to 'Open', user_resource_thread_path(resourcethread.user.id, resourcethread.id) %></td>
+								<td><%= button_to 'View Thread >', user_resource_thread_path(resourcethread.user.id, resourcethread.id), class: 'btn btn-sm btn-light' %></td>
 							</tr>
 						<% end %>
 					</table>
