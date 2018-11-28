@@ -2,22 +2,23 @@ class ResourceThreadsController < ApplicationController
 	layout false
 	before_action :authenticate_user, :only => [:index, :new, :create, :show, :destroy, :edit, :update] #Only logged in users can gain access to all the actions
 	def index
-		@users = User.all #For thread listing
+		@view = params[:view] #For index view type
 		@keyword = Keyword.find_by(text: params[:keyword]) #pass the search key to @keyword
+		if @view == "user"
+			@unfiltered = ResourceThread.where(user: @current_user)
+		else
+			@unfiltered = ResourceThread.all
+		end
 		if params[:keyword] == nil or params[:keyword] == ""
 			@status = 0 #Show all threads
+			@filtered = @unfiltered
 		else
-			if @keyword == nil
+			@filtered = @unfiltered.joins(tags: :keyword).where('keywords.text = ?', params[:keyword])
+			if @filtered.empty?
 				@status = 1 #Search fail
 			else
 				@status = 2 #Search success
 			end
-		end
-
-		@view = params[:view]
-		#For index view type
-		if params[:view] == "user"
-			@view = "user"
 		end
 	end
 
