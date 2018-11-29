@@ -43,15 +43,20 @@
 
 	<main role="main" class="container">
 		<div class="jumbotron">
-			<%= link_to 'Back to thread index', user_resource_threads_path(@user.id) %>
-			<% if @current_user == @user %> <!-- Show Edit/Delete Thread if user owns the thread -->
-				<%= button_to 'Edit', edit_user_resource_thread_path(@user.id, @resourcethread.id) %>
-				<%= button_to 'Delete', user_resource_thread_path(@user.id, @resourcethread.id), method: :delete, data: { confirm: 'Are you sure?' } %>
-			<% end %>
-			<h1 class="h2"><%= @resourcethread.title %></h1>
-			Created by <%= @resourcethread.user.username %>
+			<div class="text-left">
+				<%= link_to '< Back to index', user_resource_threads_path(@user.id), class: 'btn btn-sm btn-outline-secondary mb-3' %>
+			</div>
+			<h1 class="h3"><%= @resourcethread.title %></h1>
+			<small class="text-muted h6">Created by <%= @resourcethread.user.username %> | Keywords: <%= @resourcethread.all_keywords %></small>
 			<p><%= @resourcethread.description %></p>
-			Keywords: <%= @resourcethread.all_keywords %>
+			<% if @current_user == @user %> <!-- Show Edit/Delete Thread if user owns the thread -->
+				<div class="text-right">
+					<div class="btn-group">
+						<%= button_to 'Edit', edit_user_resource_thread_path(@user.id, @resourcethread.id), class: 'btn btn-primary' %>
+						<%= button_to 'Delete', user_resource_thread_path(@user.id, @resourcethread.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-primary ml-3' %>
+					</div>
+				</div>
+			<% end %>
 			<hr>
 			<h2>Folders:</h2>
 			<% @resourcethread.folders.each do |folder| %>
@@ -81,6 +86,7 @@
 						<%= form.submit %>
 					<% end %>
 			<% end %>
+			<hr>
 			<h2>
 				<%= @resourcethread.resource_count %> <!-- For grammar correction -->
 				<% if @resourcethread.resource_count == 1%>

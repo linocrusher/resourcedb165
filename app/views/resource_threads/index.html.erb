@@ -85,7 +85,7 @@
 			<% if @status == 1 %> <!-- If keyword doesn't match any tag, print No results -->
 			<p>No results found.</p>
 			<% else %>
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>Title</th>
@@ -99,13 +99,13 @@
 				</thead>
 				<% @filtered.each do |resourcethread| %>
 				<tr>
-					<td><%= resourcethread.title %></td>
+					<th><%= resourcethread.title %></th>
 					<td><%= resourcethread.description %></td>
 					<% if @view == nil %>
 					<td><%= resourcethread.user.username %></td>
 					<% end %>
 					<td><%= resourcethread.resource_count %></td>
-					<td><%= button_to 'View Thread >', user_resource_thread_path(resourcethread.user.id, resourcethread.id), class: 'btn btn-sm btn-light' %></td>
+					<td><%= button_to 'View Thread >', user_resource_thread_path(resourcethread.user.id, resourcethread.id), class: 'btn btn-sm btn-outline-secondary' %></td>
 				</tr>
 				<% end %>
 			</table>
