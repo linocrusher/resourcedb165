@@ -57,3 +57,6 @@ gem 'coffee-script-source', '1.8.0'
 
 #For password encryption
 gem 'bcrypt'
+
+#For generating seed.rb from existing data
+gem 'seed_dump'
