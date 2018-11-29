@@ -1,3 +1,16 @@
+User.create!([
+  {username: "alanturing", password: "$2a$10$YSfQIlVyk2fK6L/5eas2BuC7i3TyxLC8bufHEpQz4r4qpcSqxUnUm", date_created: nil, salt: "$2a$10$YSfQIlVyk2fK6L/5eas2Bu"},
+  {username: "adalovelace", password: "$2a$10$3EGS7S4wgflHNrUfGSlR7eCI5GCldmJ9MBaYpiY4MC3LNB8hJp3sa", date_created: nil, salt: "$2a$10$3EGS7S4wgflHNrUfGSlR7e"},
+  {username: "linustorvalds", password: "$2a$10$2/1QqRlFfu2Jb/rI0BUrPOyypA0ysx1nInWPiJHHxtYNAyRtsSPiy", date_created: nil, salt: "$2a$10$2/1QqRlFfu2Jb/rI0BUrPO"},
+  {username: "egrelayson", password: "$2a$10$4vavmTri9f3uIIQX1Djza.GOEb54cuN4Ur2lqSbGpxeUmKuALv56K", date_created: nil, salt: "$2a$10$4vavmTri9f3uIIQX1Djza."}
+])
+ResourceThread.create!([
+  {title: "CCNA 2018", description: "What resources did you use to study?", user_id: 1, resource_count: 1},
+  {title: "MySQL", description: "Where should I start?", user_id: 2, resource_count: 2},
+  {title: "TensorFlow Basics", description: "", user_id: 3, resource_count: 0},
+  {title: "Science & Technology", description: "Overview, Philosophy, & History of Science & Technology", user_id: 4, resource_count: 6},
+  {title: "The Philippine linguistic situation", description: "Classification of Philippine languages, Endangered and extinct languages in the Philippines", user_id: 4, resource_count: 2}
+])
 Folder.create!([
   {name: "Cisco", resource_thread_id: 1},
   {name: "for noobs", resource_thread_id: 2},
@@ -29,13 +42,6 @@ Resource.create!([
   {trust: 100.0, text: "Language map of the Philippines; Quakenbush, 1998: 1-22, PPT", resource_thread_id: 5},
   {trust: 100.0, text: "https://blog.senti.com.ph/the-philippine-linguistic-situation-18a69f14a1b7", resource_thread_id: 5}
 ])
-ResourceThread.create!([
-  {title: "CCNA 2018", description: "What resources did you use to study?", user_id: 1, resource_count: 1},
-  {title: "MySQL", description: "Where should I start?", user_id: 2, resource_count: 2},
-  {title: "TensorFlow Basics", description: "", user_id: 3, resource_count: 0},
-  {title: "Science & Technology", description: "Overview, Philosophy, & History of Science & Technology", user_id: 4, resource_count: 6},
-  {title: "The Philippine linguistic situation", description: "Classification of Philippine languages, Endangered and extinct languages in the Philippines", user_id: 4, resource_count: 2}
-])
 Rfile.create!([
   {resource_id: 1, folder_id: 1},
   {resource_id: 3, folder_id: 2},
@@ -57,12 +63,6 @@ Tag.create!([
   {resource_thread_id: 5, keyword_id: 7},
   {resource_thread_id: 5, keyword_id: 8},
   {resource_thread_id: 5, keyword_id: 9}
-])
-User.create!([
-  {username: "alanturing", password: "$2a$10$YSfQIlVyk2fK6L/5eas2BuC7i3TyxLC8bufHEpQz4r4qpcSqxUnUm", date_created: nil, salt: "$2a$10$YSfQIlVyk2fK6L/5eas2Bu"},
-  {username: "adalovelace", password: "$2a$10$3EGS7S4wgflHNrUfGSlR7eCI5GCldmJ9MBaYpiY4MC3LNB8hJp3sa", date_created: nil, salt: "$2a$10$3EGS7S4wgflHNrUfGSlR7e"},
-  {username: "linustorvalds", password: "$2a$10$2/1QqRlFfu2Jb/rI0BUrPOyypA0ysx1nInWPiJHHxtYNAyRtsSPiy", date_created: nil, salt: "$2a$10$2/1QqRlFfu2Jb/rI0BUrPO"},
-  {username: "egrelayson", password: "$2a$10$4vavmTri9f3uIIQX1Djza.GOEb54cuN4Ur2lqSbGpxeUmKuALv56K", date_created: nil, salt: "$2a$10$4vavmTri9f3uIIQX1Djza."}
 ])
 Vote.create!([
   {value: "up", user_id: 2, resource_id: 3},
