@@ -1,134 +1,122 @@
-Logged in as <%= @current_user.username %>
-<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
-	 <%= submit_tag("Log Out") %>
-<% end %>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>View Thread - TeachMeSensei</title>
+	<%= stylesheet_link_tag "application" %>
+	<%= stylesheet_link_tag "resource_threads" %>
+</head>
+<body>
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+		<a class="navbar-brand" href="#">TeachMeSensei</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<%= form_tag(user_resource_threads_path, method: :get) do %>
+					<%= hidden_field_tag :view, "user" %>
+					<%= submit_tag 'My Threads', class: 'no-btn nav-link' %>
+					<% end %>
+				</li>
+				<li class="nav-item">
+					<%= form_tag(user_resource_threads_path, method: :get) do %>
+					<%= submit_tag 'All Threads', class: 'no-btn nav-link' %>
+					<% end %>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="#">View Thread</a>
+				</li>
+			</ul>
+			<div class="form-inline my-2 my-md-0">
+				<div class="text-light small mx-2">Logged in as <strong><%= @current_user.username %></strong>.</div>
+				<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
+					<%= submit_tag("Log Out", class: 'btn btn-sm btn-outline-secondary') %>
+				<% end %>
+			</div>
+		</div>
+	</nav>
 
-<p>
-	<strong>Title:</strong>
-	<%= @resourcethread.title %>
-</p>
+	<!-- Content under navbar -->
 
-<p>
-	<strong>Description:</strong>
-	<%= @resourcethread.description %>
-</p>
-
-<p>
-	<strong>Owner:</strong>
-	<%= @resourcethread.user.username %>
-</p>
-
-<p>
-	<strong>Keywords:</strong>
-	<%= @resourcethread.all_keywords %>
-</p>
-
-<% if @current_user == @user %> <!Show Edit/Delete Thread if user owns the thread>
-	<p>
-	<%= button_to 'Edit', edit_user_resource_thread_path(@user.id, @resourcethread.id) %>
-	</p>
-	<p>
-	<%= button_to 'Delete', user_resource_thread_path(@user.id, @resourcethread.id),
-	              method: :delete,
-	              data: { confirm: 'Are you sure?' } %>
-	</p>
-<% end %>
-<hr>
-	<h2>Folders:</h2>
-	<hr>
-	<% @resourcethread.folders.each do |folder| %>
-	<p>
-		<strong><%= folder.name %></strong>
-		<% if @current_user == @user %> <!Show Delete Folder if user owns the thread>
-			<%= button_to 'Delete', user_resource_thread_folder_path(@user.id, @resourcethread.id, folder),
-			method: :delete,
-			data: { confirm: 'Are you sure?' } %>
-		<% end %>
-
-	</p>
-		<% folder.resources.each do |resource| %>
-		<p>
-			<strong>Link:</strong>
-			<%= resource.text %><br>
-			Created on:
-			<%= resource.created_at %>
-			<% if @current_user == @user %> <!Show Remove Folder if user owns the thread>
-				<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
-					<%= hidden_field_tag :f_id, folder.id %> <!Pass the folder id to f_id>
-					<%= hidden_field_tag :r_id, resource.id %> <!Pass the resource id to r_id>
-					<%= hidden_field_tag :type, "delete" %>
-					<%= form.submit 'Remove from folder' %>
+	<main role="main" class="container">
+		<div class="jumbotron">
+			<%= link_to 'Back to thread index', user_resource_threads_path(@user.id) %>
+			<% if @current_user == @user %> <!-- Show Edit/Delete Thread if user owns the thread -->
+				<%= button_to 'Edit', edit_user_resource_thread_path(@user.id, @resourcethread.id) %>
+				<%= button_to 'Delete', user_resource_thread_path(@user.id, @resourcethread.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+			<% end %>
+			<h1 class="h2"><%= @resourcethread.title %></h1>
+			Created by <%= @resourcethread.user.username %>
+			<p><%= @resourcethread.description %></p>
+			Keywords: <%= @resourcethread.all_keywords %>
+			<hr>
+			<h2>Folders:</h2>
+			<% @resourcethread.folders.each do |folder| %>
+				<strong><%= folder.name %></strong>
+				<% if @current_user == @user %> <!-- Show Delete Folder if user owns the thread -->
+					<%= button_to 'Delete', user_resource_thread_folder_path(@user.id, @resourcethread.id, folder), method: :delete, data: { confirm: 'Are you sure?' } %>
+				<% end %>
+				<% folder.resources.each do |resource| %>
+					<strong>Link:</strong>
+					<%= resource.text %><br>
+					Created on:
+					<%= resource.created_at %>
+					<% if @current_user == @user %> <!-- Show Remove Folder if user owns the thread -->
+						<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
+							<%= hidden_field_tag :f_id, folder.id %> <!-- Pass the folder id to f_id -->
+							<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
+							<%= hidden_field_tag :type, "delete" %>
+							<%= form.submit 'Remove from folder' %>
+						<% end %>
+					<% end %>
 				<% end %>
 			<% end %>
-		</p>
-		<% end %>
-		<hr>
-	<% end %>
+			<% if @current_user == @user %> <!-- Show Create Folder if user owns the thread -->
+					<strong>Add a folder:</strong>
+					<%= form_for [@user, @resourcethread, @resourcethread.folders.build] do |form| %>
+						<%= form.text_field :name %>
+						<%= form.submit %>
+					<% end %>
+			<% end %>
+			<h2>
+				<%= @resourcethread.resource_count %> <!-- For grammar correction -->
+				<% if @resourcethread.resource_count == 1%>
+					Reply:
+				<% else %>
+					Replies:
+				<% end %>
+			</h2>
+			<% @resourcethread.resources.each do |resource| %>
+				<strong>Resource:</strong><%= resource.text %>
+				Created on:<%= resource.created_at %>
+				Trust:<%= resource.trust %>
+				Did you find this resource helpful?
+				<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %> <!-- Vote drop down list -->
+					<%= form.select :v_type, [['Yes','up'],['No','down'],['Remove Vote','none']] %>
+					<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
+					<%= form.submit 'Submit' %>
+				<% end %>
+				<% if @current_user == @user %> <!-- Show Add to Folder if user owns the thread -->
+					<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
+						<!-- For the drop down list -->
+						<%= form.collection_select :f_id, @resourcethread.folders.all, :id, :name %> <!-- Passes id of the selected folder to f_id -->
+						<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
+						<%= hidden_field_tag :type, "add" %>
+						<%= form.submit 'Add to folder' %>
+					<% end %>
+				<% end %>
+				<%= button_to 'Delete', user_resource_thread_resource_path(@user.id, @resourcethread.id, resource), method: :delete, data: { confirm: 'Are you sure?' } %>
+			<% end %>
 
-<% if @current_user == @user %> <!Show Create Folder if user owns the thread>
-	<p>
-		<strong>Add a folder:</strong>
-		<%= form_for [@user, @resourcethread, @resourcethread.folders.build] do |form| %>
-		<p>
-			<%= form.text_field :name %>
-		</p>
-		<p>
-			<%= form.submit %>
-		</p>
-		<% end %>
-	</p>
-<% end %>
-
-<h2> 
-	<%= @resourcethread.resource_count %> <!For grammar correction>
-	<% if @resourcethread.resource_count == 1%>
-	Reply:
-	<% else %>
-	Replies:
-	<% end %>
-	</h2>
-<hr>
-<% @resourcethread.resources.each do |resource| %>
-	  <p>
-	    <strong>Resource:</strong>
-	    <%= resource.text %><br>
-	    Created on:
-	    <%= resource.created_at %><br>
-	    Trust:
-	    <%= resource.trust %><br>
-	    Did you find this resource helpful?
-
-	    <%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %> <!Vote drop down list>
-	    	<%= form.select :v_type, [['Yes','up'],['No','down'],['Remove Vote','none']] %>
-	    	<%= hidden_field_tag :r_id, resource.id %> <!Pass the resource id to r_id>
-	    	<%= form.submit 'Submit' %>
-	    <% end %>
-	    <br>
-	    <% if @current_user == @user %> <!Show Add to Folder if user owns the thread>
-		    <%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
-		    	<!For the drop down list>
-		    	<%= form.collection_select :f_id, @resourcethread.folders.all, :id, :name %> <!Passes id of the selected folder to f_id>
-		    	<%= hidden_field_tag :r_id, resource.id %> <!Pass the resource id to r_id>
-		    	<%= hidden_field_tag :type, "add" %>
-		    	<%= form.submit 'Add to folder' %>
-		    <% end %>
-	    <% end %>
-	    <%= button_to 'Delete', user_resource_thread_resource_path(@user.id, @resourcethread.id, resource),
-		              method: :delete,
-		              data: { confirm: 'Are you sure?' } %>
-	  </p>
-	  <hr>
-<% end %>
-
-<p>
-	<strong>Add a resource:</strong>
-	<%= form_for [@user, @resourcethread, @resourcethread.resources.build] do |form| %>
-	<p>
-		<%= form.text_area :text %>
-	</p>
-	<p>
-		<%= form.submit %>
-	</p>
-	<% end %>
-</p>
-<%= link_to 'Back to thread index', user_resource_threads_path(@user.id) %>
+			<strong>Add a resource:</strong>
+			<%= form_for [@user, @resourcethread, @resourcethread.resources.build] do |form| %>
+				<%= form.text_area :text %>
+				<%= form.submit %>
+			<% end %>
+		</div>
+	</main>
+</body>
+</html>
