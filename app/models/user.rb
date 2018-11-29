@@ -22,6 +22,11 @@ class User < ApplicationRecord
 	end   
 
 	def match_password(password_input="")
+		puts self.username
+		puts self.password
+		puts BCrypt::Engine.hash_secret(password_input, salt)
+		puts password_input
+		puts salt
 		password == BCrypt::Engine.hash_secret(password_input, salt)
 	end
 

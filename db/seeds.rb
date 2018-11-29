@@ -1,8 +1,8 @@
 User.create!([
-  {username: "alanturing", password: "$2a$10$YSfQIlVyk2fK6L/5eas2BuC7i3TyxLC8bufHEpQz4r4qpcSqxUnUm", date_created: nil, salt: "$2a$10$YSfQIlVyk2fK6L/5eas2Bu"},
-  {username: "adalovelace", password: "$2a$10$3EGS7S4wgflHNrUfGSlR7eCI5GCldmJ9MBaYpiY4MC3LNB8hJp3sa", date_created: nil, salt: "$2a$10$3EGS7S4wgflHNrUfGSlR7e"},
-  {username: "linustorvalds", password: "$2a$10$2/1QqRlFfu2Jb/rI0BUrPOyypA0ysx1nInWPiJHHxtYNAyRtsSPiy", date_created: nil, salt: "$2a$10$2/1QqRlFfu2Jb/rI0BUrPO"},
-  {username: "egrelayson", password: "$2a$10$4vavmTri9f3uIIQX1Djza.GOEb54cuN4Ur2lqSbGpxeUmKuALv56K", date_created: nil, salt: "$2a$10$4vavmTri9f3uIIQX1Djza."}
+  {username: "alanturing", password: "turingmachine", date_created: nil, salt: "$2a$10$YSfQIlVyk2fK6L/5eas2Bu"},
+  {username: "adalovelace", password: "analyticalengine", date_created: nil, salt: "$2a$10$3EGS7S4wgflHNrUfGSlR7e"},
+  {username: "linustorvalds", password: "linuxmasterrace", date_created: nil, salt: "$2a$10$2/1QqRlFfu2Jb/rI0BUrPO"},
+  {username: "egrelayson", password: "qwerty", date_created: nil, salt: "$2a$10$4vavmTri9f3uIIQX1Djza."}
 ])
 ResourceThread.create!([
   {title: "CCNA 2018", description: "What resources did you use to study?", user_id: 1, resource_count: 1},
