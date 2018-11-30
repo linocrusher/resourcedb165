@@ -47,7 +47,7 @@
 				<%= link_to '< Back to index', user_resource_threads_path(@user.id), class: 'btn btn-sm btn-outline-secondary mb-3' %>
 			</div>
 			<h1 class="h3"><%= @resourcethread.title %></h1>
-			<small class="text-muted h6">Created by <%= @resourcethread.user.username %> | Keywords: <%= @resourcethread.all_keywords %></small>
+			<small class="text-muted">Created by <%= @resourcethread.user.username %> | Keywords: <%= @resourcethread.all_keywords %></small>
 			<p><%= @resourcethread.description %></p>
 			<% if @current_user == @user %> <!-- Show Edit/Delete Thread if user owns the thread -->
 				<div class="text-right">
@@ -87,45 +87,66 @@
 			<% if @current_user == @user %> <!-- Show Create Folder if user owns the thread -->
 					<%= form_for [@user, @resourcethread, @resourcethread.folders.build] do |form| %>
 						<div class="d-flex justify-content-between">
-						<%= form.text_field :name, placeholder: 'Enter folder name', class: 'form-control' %>
-						<%= form.submit '+ New folder', class: 'btn btn-primary ml-3' %></div>
+							<%= form.text_field :name, placeholder: 'Enter folder name', class: 'form-control' %>
+							<%= form.submit '+ New folder', class: 'btn btn-primary ml-3' %>
+						</div>
 					<% end %>
 			<% end %>
 			<hr>
-			<h2>
+			<h2 class="h3">
 				<%= @resourcethread.resource_count %> <!-- For grammar correction -->
 				<% if @resourcethread.resource_count == 1%>
-					Reply:
+					Resource:
 				<% else %>
-					Replies:
+					Resources:
 				<% end %>
 			</h2>
 			<% @resourcethread.resources.each do |resource| %>
-				<strong>Resource:</strong><%= resource.text %>
-				Created on:<%= resource.created_at %>
-				Trust:<%= resource.trust %>
-				Did you find this resource helpful?
-				<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %> <!-- Vote drop down list -->
-					<%= form.select :v_type, [['Yes','up'],['No','down'],['Remove Vote','none']] %>
-					<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
-					<%= form.submit 'Submit' %>
-				<% end %>
-				<% if @current_user == @user %> <!-- Show Add to Folder if user owns the thread -->
-					<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
-						<!-- For the drop down list -->
-						<%= form.collection_select :f_id, @resourcethread.folders.all, :id, :name %> <!-- Passes id of the selected folder to f_id -->
-						<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
-						<%= hidden_field_tag :type, "add" %>
-						<%= form.submit 'Add to folder' %>
-					<% end %>
-				<% end %>
-				<%= button_to 'Delete', user_resource_thread_resource_path(@user.id, @resourcethread.id, resource), method: :delete, data: { confirm: 'Are you sure?' } %>
+				<div class="card bg-transparent border-secondary mb-3">
+					<div class="card-body">
+						<small class="text-muted">Created on <%= resource.created_at %></small>
+						<div class="d-flex justify-content-between">
+							<small><p><%= resource.text %></p></small>
+							<% if resource.trust > 75 %>
+								<div class="text-success mx-3 text-right">
+							<% elsif resource.trust > 50 %>
+								<div class="text-warning mx-3 text-right">
+							<% else %>
+								<div class="text-danger mx-3 text-right">
+							<% end %>
+							<small>Trust:</small><br><strong><%= resource.trust %>%</strong></div>
+						</div>
+						<div class="form-inline">
+							<em><small class="text-secondary">Did you find this resource helpful?</small></em>
+							<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %> <!-- Vote drop down list -->
+								<%= form.select :v_type, [['Yes','up'],['No','down'],['Remove Vote','none']], {}, {class: 'form-control form-control-sm ml-3'} %>
+								<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
+								<%= form.submit 'Enter', class: 'btn btn-sm btn-outline-secondary' %>
+							<% end %>
+						</div>
+						<% if @current_user == @user %> <!-- Show Add to Folder if user owns the thread -->
+							<div class="d-flex justify-content-between align-items-end mt-2">
+								<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
+									<!-- For the drop down list -->
+									<div class="form-inline">
+										<%= form.collection_select :f_id, @resourcethread.folders.all, :id, :name, {:prompt=>true}, {:class=>'form-control form-control-sm' } %> <!-- Passes id of the selected folder to f_id -->
+										<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
+										<%= hidden_field_tag :type, "add" %>
+										<%= form.submit 'Add to folder', class: 'btn btn-sm btn-outline-secondary ml-1' %>
+									</div>
+								<% end %>
+								<%= button_to 'Delete resource', user_resource_thread_resource_path(@user.id, @resourcethread.id, resource), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-primary' %>
+							</div>
+						<% end %>
+					</div>
+				</div>
 			<% end %>
 
-			<strong>Add a resource:</strong>
 			<%= form_for [@user, @resourcethread, @resourcethread.resources.build] do |form| %>
-				<%= form.text_area :text %>
-				<%= form.submit %>
+				<div class="d-flex justify-content-between">
+					<%= form.text_area :text, placeholder: 'Enter resource', class: 'form-control' %>
+					<%= form.submit '+ New resource', class: 'btn btn-primary ml-3' %>
+				</div>
 			<% end %>
 		</div>
 	</main>
