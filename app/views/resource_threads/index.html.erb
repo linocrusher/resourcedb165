@@ -64,7 +64,7 @@
 			</h1>
 			<div class="form-inline">
 				<% if @view == "user" %>
-				<%= button_to '+ New Thread', {controller: 'resource_threads', action: 'new'}, {class: 'btn btn-lg btn-primary m-4'} %>
+				<%= button_to '+ New thread', {controller: 'resource_threads', action: 'new'}, {class: 'btn btn-lg btn-primary m-4'} %>
 				<% end %>
 				<%= form_tag(user_resource_threads_path, method: :get) do %>
 				<% if @view == "user" %>
@@ -105,7 +105,7 @@
 					<td><%= resourcethread.user.username %></td>
 					<% end %>
 					<td><%= resourcethread.resource_count %></td>
-					<td><%= button_to 'View Thread >', user_resource_thread_path(resourcethread.user.id, resourcethread.id), class: 'btn btn-sm btn-outline-secondary' %></td>
+					<td><%= button_to 'View thread >', user_resource_thread_path(resourcethread.user.id, resourcethread.id), class: 'btn btn-sm btn-outline-secondary' %></td>
 				</tr>
 				<% end %>
 			</table>

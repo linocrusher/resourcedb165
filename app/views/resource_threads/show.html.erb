@@ -58,32 +58,37 @@
 				</div>
 			<% end %>
 			<hr>
-			<h2>Folders:</h2>
+			<h2 class="h3">Folders</h2>
 			<% @resourcethread.folders.each do |folder| %>
-				<strong><%= folder.name %></strong>
-				<% if @current_user == @user %> <!-- Show Delete Folder if user owns the thread -->
-					<%= button_to 'Delete', user_resource_thread_folder_path(@user.id, @resourcethread.id, folder), method: :delete, data: { confirm: 'Are you sure?' } %>
-				<% end %>
-				<% folder.resources.each do |resource| %>
-					<strong>Link:</strong>
-					<%= resource.text %><br>
-					Created on:
-					<%= resource.created_at %>
-					<% if @current_user == @user %> <!-- Show Remove Folder if user owns the thread -->
-						<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
-							<%= hidden_field_tag :f_id, folder.id %> <!-- Pass the folder id to f_id -->
-							<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
-							<%= hidden_field_tag :type, "delete" %>
-							<%= form.submit 'Remove from folder' %>
+				<div class="card bg-light mb-3">
+					<div class="card-header d-flex justify-content-between">
+						<h5 class="mb-0 align-self-center"><%= folder.name %></h5>
+						<% if @current_user == @user %> <!-- Show Delete Folder if user owns the thread -->
+							<%= button_to 'Delete folder', user_resource_thread_folder_path(@user.id, @resourcethread.id, folder), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-primary ml-3' %>
 						<% end %>
-					<% end %>
-				<% end %>
+					</div>
+					<ul class="list-group list-group-flush">
+						<% folder.resources.each do |resource| %>
+							<li class="list-group-item d-flex justify-content-between">
+								<small class="align-self-center"><%= resource.text %></small>
+								<% if @current_user == @user %> <!-- Show Remove Folder if user owns the thread -->
+									<%= form_with( controller: "resource_threads", action: "index", local: true) do |form| %>
+										<%= hidden_field_tag :f_id, folder.id %> <!-- Pass the folder id to f_id -->
+										<%= hidden_field_tag :r_id, resource.id %> <!-- Pass the resource id to r_id -->
+										<%= hidden_field_tag :type, "delete" %>
+										<%= form.submit 'Remove', class: 'btn btn-sm btn-outline-secondary ml-3' %>
+									<% end %>
+								<% end %>
+							</li>
+						<% end %>
+					</ul>
+				</div>
 			<% end %>
 			<% if @current_user == @user %> <!-- Show Create Folder if user owns the thread -->
-					<strong>Add a folder:</strong>
 					<%= form_for [@user, @resourcethread, @resourcethread.folders.build] do |form| %>
-						<%= form.text_field :name %>
-						<%= form.submit %>
+						<div class="d-flex justify-content-between">
+						<%= form.text_field :name, placeholder: 'Enter folder name', class: 'form-control' %>
+						<%= form.submit '+ New folder', class: 'btn btn-primary ml-3' %></div>
 					<% end %>
 			<% end %>
 			<hr>
