@@ -2,7 +2,7 @@ class User < ApplicationRecord
 	has_many :resource_threads
 	has_many :votes
 	before_save :encrypt_password
-	validates :username, presence: true, length: { maximum: 8 }, uniqueness: true
+	validates :username, presence: true, length: { maximum: 20 }, uniqueness: true
 	validates :password, presence: true, length: { maximum: 128 }, confirmation: true
 
 	def encrypt_password
