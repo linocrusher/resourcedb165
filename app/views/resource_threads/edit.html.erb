@@ -1,36 +1,78 @@
-Logged in as <%= @current_user.username %>
-<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
-   <%= submit_tag("Log Out") %>
-<% end %>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Edit Thread - TeachMeSensei</title>
+	<%= stylesheet_link_tag "application" %>
+	<%= stylesheet_link_tag "resource_threads" %>
+</head>
+<body>
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+		<a class="navbar-brand" href="#">TeachMeSensei</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<%= form_tag(user_resource_threads_path, method: :get) do %>
+					<%= hidden_field_tag :view, "user" %>
+					<%= submit_tag 'My Threads', class: 'no-btn nav-link' %>
+					<% end %>
+				</li>
+				<li class="nav-item">
+					<%= form_tag(user_resource_threads_path, method: :get) do %>
+					<%= submit_tag 'All Threads', class: 'no-btn nav-link' %>
+					<% end %>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Edit Thread</a>
+				</li>
+			</ul>
+			<div class="form-inline my-2 my-md-0">
+				<div class="text-light small mx-2">Logged in as <strong><%= @current_user.username %></strong>.</div>
+				<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
+					<%= submit_tag("Log Out", class: 'btn btn-sm btn-outline-secondary') %>
+				<% end %>
+			</div>
+		</div>
+	</nav>
 
-<h2>Edit Thread:</h2>
-<%= form_with( model: [@user, @resourcethread], local: true) do |form| %>
+	<!-- Content under navbar -->
 
-  <!Error printing>
-  <% if @resourcethread.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-        <% @resourcethread.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+	<main role="main" class="container">
+		<div class="jumbotron">
+      <h1 class="h3">Edit Thread</h1>
+      <hr>
+      <%= form_with( model: [@user, @resourcethread], local: true) do |form| %>
+        <!-- Error printing -->
+        <% if @resourcethread.errors.any? %>
+          <div id="error_explanation" class="alert alert-danger" role="alert">
+            <ul>
+              <% @resourcethread.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <p>
-    Title<br>
-    <%= form.text_field :title, :value => @resourcethread.title %>
-  </p>
-  <p>
-    Keywords (separate by comma)<br>
-    <%= form.text_field :all_keywords, :value => @resourcethread.all_keywords %>
-  </p>
-  <p>
-    Description<br>
-    <%= form.text_area :description, :value => @resourcethread.description %>
-  </p>
-  <p>
-    <%= form.submit 'Update' %>
-  </p>
-<% end %>
-<%= link_to 'Back to thread index', user_resource_threads_path(@user.id) %>
+        <div class="form-group">
+          <label>Title</label>
+          <%= form.text_field :title, :value => @resourcethread.title, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <label>Keyword/s</label>
+          <%= form.text_field :all_keywords, :value => @resourcethread.all_keywords, class: 'form-control' %>
+          <small class="form-text text-muted">Must be separated by commas.</small>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <%= form.text_area :description, :value => @resourcethread.description, class: 'form-control' %>
+        </div>
+        <%= form.submit 'Save', class: 'btn btn-primary mr-1' %>
+        <%= link_to 'Cancel', user_resource_threads_path(@user.id), class: 'btn btn-outline-primary' %>
+      <% end %>
+		</div>
+	</main>
+</body>
+</html>
