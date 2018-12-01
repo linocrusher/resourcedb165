@@ -11,4 +11,13 @@
  * It is generally better to create a new file per style scope.
  *
  */
+ $theme-colors: (
+  "primary": #00d5ff
+ );
 @import "bootstrap";
+.btn-primary {
+  color: $light;
+}
+.btn-outline-primary:hover {
+  color: $light;
+}

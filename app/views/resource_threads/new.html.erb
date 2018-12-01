@@ -3,39 +3,35 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="/assets/tms_logo.ico">
 	<title>New Thread - TeachMeSensei</title>
 	<%= stylesheet_link_tag "application" %>
 	<%= stylesheet_link_tag "resource_threads" %>
 </head>
 <body>
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-		<a class="navbar-brand" href="#">TeachMeSensei</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarCollapse">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<%= form_tag(user_resource_threads_path, method: :get) do %>
-					<%= hidden_field_tag :view, "user" %>
-					<%= submit_tag 'My Threads', class: 'no-btn nav-link' %>
-					<% end %>
-				</li>
-				<li class="nav-item">
-					<%= form_tag(user_resource_threads_path, method: :get) do %>
-					<%= submit_tag 'All Threads', class: 'no-btn nav-link' %>
-					<% end %>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="#">New Thread</a>
-				</li>
-			</ul>
-			<div class="form-inline my-2 my-md-0">
-				<div class="text-light small mx-2">Logged in as <strong><%= @current_user.username %></strong>.</div>
-				<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
-					<%= submit_tag("Log Out", class: 'btn btn-sm btn-outline-secondary') %>
+		<div class="navbar-brand"><img src="/assets/tms_logo.png" height="30" class="d-inline-block align-top"></div>
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<%= form_tag(user_resource_threads_path, method: :get) do %>
+				<%= hidden_field_tag :view, "user" %>
+				<%= submit_tag 'My Threads', class: 'no-btn nav-link' %>
 				<% end %>
-			</div>
+			</li>
+			<li class="nav-item">
+				<%= form_tag(user_resource_threads_path, method: :get) do %>
+				<%= submit_tag 'All Threads', class: 'no-btn nav-link' %>
+				<% end %>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="#">New Thread</a>
+			</li>
+		</ul>
+		<div class="form-inline my-2 my-md-0">
+			<div class="text-light small mx-2">Logged in as <strong><%= @current_user.username %></strong>.</div>
+			<%= form_tag(:controller => 'sessions', :action => 'logout') do %>
+				<%= submit_tag("Log Out", class: 'btn btn-sm btn-outline-secondary') %>
+			<% end %>
 		</div>
 	</nav>
 

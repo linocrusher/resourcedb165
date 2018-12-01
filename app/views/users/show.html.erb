@@ -3,15 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/assets/tms_logo.ico">
     <title>Account Registered - TeachMeSensei</title>
     <%= stylesheet_link_tag "application" %>
     <%= stylesheet_link_tag "users" %>
   </head>
 
   <body class="text-center">
-    <!--img class="mb-4" src="tms_logo.svg" alt="" width="72" height="72"-->
-    <div class="container"><p class="h3 mb-3 font-weight-normal">Welcome, <strong><%= @user.username %></strong>!</p>
-    <p class="h6 mb-3 font-weight-normal">Your account has successfully been created.</p>
-    <%= link_to 'Open the dashboard', user_resource_threads_path(session[:user_id]), class: 'btn btn-lg btn-primary' %></div>
+    <div class="container">
+      <img class="m-3" src="/assets/tms_logo.png" style="width:20%">
+      <p class="h3 mb-3 font-weight-normal">Welcome, <strong><%= @user.username %></strong>!</p>
+      <p class="h6 mb-3 font-weight-normal">Your account has successfully been created.</p>
+      <%= link_to 'Open the dashboard', user_resource_threads_path(session[:user_id]), class: 'btn btn-lg btn-primary' %>
+    </div>
   </body>
 </html>

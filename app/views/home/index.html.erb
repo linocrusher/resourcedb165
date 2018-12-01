@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>TeachMeSensei</title>
+    <link rel="icon" href="/assets/tms_logo.ico">
+    <title>Welcome to TeachMeSensei!</title>
     <%= stylesheet_link_tag "application" %>
     <%= stylesheet_link_tag "home" %>
   </head>
   <body class="text-center">
     <div class="overlay">
       <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-        <header class="masthead mb-auto">
+        <header class="masthead mb-auto p-3">
           <div class="inner">
-            <h3 class="masthead-brand">TMS</h3>
+            <img class="masthead-brand" src="/assets/tms_logo.png" style="width:20%">
           </div>
         </header>
 
         <main role="main" class="inner cover">
-          <h1 class="cover-heading">Teach Me, Sensei!</h1>
+          <h1 class="cover-heading text-primary">Teach Me, Sensei!</h1>
           <p class="lead">Share your trusted online resources with a community of people who are passionate about learning.</p>
           <p class="lead">
             <%= link_to 'Log in', { controller: 'sessions', action: 'login' }, :class => 'btn btn-lg btn-primary' %>

@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/assets/tms_logo.ico">
     <title>Log In - TeachMeSensei</title>
     <%= stylesheet_link_tag "application" %>
     <%= stylesheet_link_tag "sessions" %>
@@ -11,6 +12,7 @@
   <body class="text-center">
     <%= form_tag({:action => 'login_attempt'}, {:class => 'form-signin'}) do %>
       <!--img class="mb-4" src="tms_logo.svg" alt="" width="72" height="72"-->
+      <img class="m-3" src="/assets/tms_logo.png" style="width:40%">
       <h1 class="h3 mb-3 font-weight-normal">TeachMeSensei</h1>
       <%= label_tag :username, nil, class: 'sr-only' %>
       <%= text_field_tag :username, nil, type: 'username', class: 'form-control', placeholder: 'Username', required: true, autofocus: true %>
