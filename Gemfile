@@ -56,7 +56,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'coffee-script-source', '1.8.0'
 
 #For password encryption
-gem 'bcrypt'
+gem 'bcrypt', '3.1.12'
 
 #For generating seed.rb from existing data
-gem 'seed_dump'
+gem 'seed_dump', '3.3.1'
