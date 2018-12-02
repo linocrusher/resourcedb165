@@ -100,7 +100,7 @@
 			<% @resourcethread.resources.each do |resource| %>
 				<div class="card bg-transparent border-secondary mb-3">
 					<div class="card-body">
-						<small class="text-muted">Created on <%= resource.created_at %></small>
+						<small class="text-muted">Created by <%= resource.user.username %> on <%= resource.created_at %></small>
 						<div class="d-flex justify-content-between">
 							<small><p><%= resource.text %></p></small>
 							<% if resource.trust > 75 %>

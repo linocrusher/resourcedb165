@@ -6,6 +6,7 @@ class ResourcesController < ApplicationController
     @resourcethread.increment!(:resource_count)
     @resource = @resourcethread.resources.create(resource_params)
     @resource.update_attribute(:trust, 100)
+    @resource.update_attribute(:user, @current_user)
     redirect_to user_resource_thread_path(@user, @resourcethread)
   end
  

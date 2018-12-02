@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181122103309) do
+ActiveRecord::Schema.define(version: 20181202003457) do
 
   create_table "folders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20181122103309) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "instances"
+  end
+
+  create_table "owners", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_owners_on_resource_id"
+    t.index ["user_id"], name: "index_owners_on_user_id"
   end
 
   create_table "resource_threads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -43,7 +52,9 @@ ActiveRecord::Schema.define(version: 20181122103309) do
     t.bigint "resource_thread_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["resource_thread_id"], name: "index_resources_on_resource_thread_id"
+    t.index ["user_id"], name: "index_resources_on_user_id"
   end
 
   create_table "rfiles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -84,8 +95,11 @@ ActiveRecord::Schema.define(version: 20181122103309) do
   end
 
   add_foreign_key "folders", "resource_threads"
+  add_foreign_key "owners", "resources"
+  add_foreign_key "owners", "users"
   add_foreign_key "resource_threads", "users"
   add_foreign_key "resources", "resource_threads"
+  add_foreign_key "resources", "users"
   add_foreign_key "rfiles", "folders"
   add_foreign_key "rfiles", "resources"
   add_foreign_key "tags", "keywords"

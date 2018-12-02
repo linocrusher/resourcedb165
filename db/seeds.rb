@@ -30,17 +30,17 @@ Keyword.create!([
   {text: "dialect", instances: 1}
 ])
 Resource.create!([
-  {trust: 100.0, text: "https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/associate/ccna-routing-switching.html#~stickynav=6", resource_thread_id: 1},
-  {trust: 100.0, text: "Use PostgreSQL instead.", resource_thread_id: 2},
-  {trust: 100.0, text: "https://www.tutorialspoint.com/mysql/", resource_thread_id: 2},
-  {trust: 100.0, text: "Kuhn, T. 1962. The Nature of Scientific Revolutions.", resource_thread_id: 4},
-  {trust: 100.0, text: "Steward, J. 1955. Theory of Culture Change: The Methodology of Multilinear Evolution. University of Illinois Press, Chicago.", resource_thread_id: 4},
-  {trust: 100.0, text: "C. Sagan. (1997). (Chapter 1) \"Can we know the universe?\" in \"Science and Its Ways of Knowing\", Hatton, J. and P. Ploufe (eds.). Prentice Hall ", resource_thread_id: 4},
-  {trust: 100.0, text: "Klemke et. al. (1998). Introductory Readings in the Philosophy of Science, Prometheus Books, New York.", resource_thread_id: 4},
-  {trust: 100.0, text: "McGinn, R. (1991).(Chapter 1) \"Why study Science, Technology in Society?\" in Science, Technology and Society. Pearson.", resource_thread_id: 4},
-  {trust: 100.0, text: "McGinn, R. (1991).(Chapter 2) \"Science and Technology ,their nature and relationships?\" in Science, Technology and Society. Pearson.(1997)", resource_thread_id: 4},
-  {trust: 100.0, text: "Language map of the Philippines; Quakenbush, 1998: 1-22, PPT", resource_thread_id: 5},
-  {trust: 100.0, text: "https://blog.senti.com.ph/the-philippine-linguistic-situation-18a69f14a1b7", resource_thread_id: 5}
+  {trust: 100.0, text: "https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/associate/ccna-routing-switching.html#~stickynav=6", resource_thread_id: 1, user_id: 3},
+  {trust: 100.0, text: "Use PostgreSQL instead.", resource_thread_id: 2, user_id: 2},
+  {trust: 100.0, text: "https://www.tutorialspoint.com/mysql/", resource_thread_id: 2, user_id: 3},
+  {trust: 100.0, text: "Kuhn, T. 1962. The Nature of Scientific Revolutions.", resource_thread_id: 4, user_id: 4},
+  {trust: 100.0, text: "Steward, J. 1955. Theory of Culture Change: The Methodology of Multilinear Evolution. University of Illinois Press, Chicago.", resource_thread_id: 4, user_id: 4},
+  {trust: 100.0, text: "C. Sagan. (1997). (Chapter 1) \"Can we know the universe?\" in \"Science and Its Ways of Knowing\", Hatton, J. and P. Ploufe (eds.). Prentice Hall ", resource_thread_id: 4, user_id: 4},
+  {trust: 100.0, text: "Klemke et. al. (1998). Introductory Readings in the Philosophy of Science, Prometheus Books, New York.", resource_thread_id: 4, user_id: 4},
+  {trust: 100.0, text: "McGinn, R. (1991).(Chapter 1) \"Why study Science, Technology in Society?\" in Science, Technology and Society. Pearson.", resource_thread_id: 4, user_id: 4},
+  {trust: 100.0, text: "McGinn, R. (1991).(Chapter 2) \"Science and Technology ,their nature and relationships?\" in Science, Technology and Society. Pearson.(1997)", resource_thread_id: 4, user_id: 4},
+  {trust: 100.0, text: "Language map of the Philippines; Quakenbush, 1998: 1-22, PPT", resource_thread_id: 5, user_id: 4},
+  {trust: 100.0, text: "https://blog.senti.com.ph/the-philippine-linguistic-situation-18a69f14a1b7", resource_thread_id: 5, user_id: 4}
 ])
 Rfile.create!([
   {resource_id: 1, folder_id: 1},
