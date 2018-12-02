@@ -70,14 +70,14 @@ class ResourceThreadsController < ApplicationController
 		@user = User.find(params[:user_id])
 		@resourcethread = @user.resource_threads.find(params[:id])
 		#For folder-resource links
-		if params[:type] and params[:f_id] != nil
+		if params[:type] and params[:f_id] != ""
 			@folder = @resourcethread.folders.find(params[:f_id])
 			@resource = @resourcethread.resources.find(params[:r_id])
 		end
 		if params[:type] == "add"
-			if Rfile.exists?(:resource => @resource, :folder => @folder) == false
-				Rfile.create(:resource => @resource, :folder => @folder)
-			end
+				if Rfile.exists?(:resource => @resource, :folder => @folder) == false
+					Rfile.create(:resource => @resource, :folder => @folder)
+				end
 		elsif params[:type] == "delete"
 			@rfile = Rfile.where(:resource => @resource, :folder => @folder)
 			@rfile.destroy_all
