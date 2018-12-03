@@ -9,7 +9,7 @@ class ResourcesController < ApplicationController
     @resource.update_attribute(:user, @current_user)
     redirect_to user_resource_thread_path(@user, @resourcethread)
   end
- 
+
   def index
   	@user = User.find(params[:user_id])
   	@resourcethread = @user.resource_threads.find(params[:resource_thread_id])
@@ -24,6 +24,8 @@ class ResourcesController < ApplicationController
     #Delete associated votes
     @votes = Vote.where(:resource => @resource)
     @votes.destroy_all
+    @rfiles = Rfile.where(:resource => @resource)
+    @rfiles.destroy_all
   	@resource.destroy
 
   	redirect_to user_resource_thread_path(@user, @resourcethread)
